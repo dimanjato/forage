@@ -1,28 +1,65 @@
--- DROP DATABASE IF EXISTS forage;
+-- -- DROP DATABASE IF EXISTS banqueSring;
 
+-- CREATE DATABASE banqueSring;
+
+-- use banqueSring
+
+-- CREATE TABLE Cheque(
+--     idCheque INT PRIMARY KEY AUTO_INCREMENT,
+--     numCheque INT,
+--     numCompte  INT,
+--     dateValide DATE
+-- );
+DROP DATABASE IF EXISTS forage;
 CREATE DATABASE forage;
+USE forage;
 
-use forage;
-
-CREATE TABLE demande_status(
-    id int primary key auto_increment,
-    nom varchar(200),
-    lieux varchar (200),
-    reference varchar unique  
+CREATE TABLE region(
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    nom VARCHAR(200)
+);
+CREATE TABLE district (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    nom VARCHAR(200),
+    id_region INT,
+    FOREIGN KEY (id_region) REFERENCES region(id)
 );
 
-create table status_demande (
-    id int primary key auto_increment,
-    id_demande int ,
-    jour_demande date 
-    foreign key (id_demande) references demande_status(id)  
+CREATE TABLE commune (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    nom VARCHAR(200),
+    id_districte INT,
+    FOREIGN KEY (id_districte) REFERENCES district(id)
 );
-CREATE TABLE associatin(
-   id int primary key, 
-   id_status int,
-   id_demande int ,
-   date_debut date ,
-   date_fin date 
-   foreign key (id_status) references demande_status(id),
-   foreign key (id_demande) references status_demande(id)
+
+CREATE TABLE client (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    nom VARCHAR(200),
+    prenom VARCHAR(200),
+    adresse VARCHAR(200)
+);
+
+CREATE TABLE demande (
+    id        INT PRIMARY KEY AUTO_INCREMENT,
+    id_client INT,
+    lieux VARCHAR(200),
+    commune INT,
+    reference VARCHAR(200) UNIQUE,
+    FOREIGN KEY (commune) REFERENCES commune(id)
+);
+
+CREATE TABLE status (
+    id         INT PRIMARY KEY AUTO_INCREMENT,
+    status     VARCHAR(200)
+  
+);
+
+CREATE TABLE demande_status (
+    id         INT PRIMARY KEY AUTO_INCREMENT,
+    id_status  INT,
+    id_demande INT,
+    date_debut DATE,
+    date_fin   DATE,
+    FOREIGN KEY (id_status)  REFERENCES status(id),
+    FOREIGN KEY (id_demande) REFERENCES demande(id)
 );
