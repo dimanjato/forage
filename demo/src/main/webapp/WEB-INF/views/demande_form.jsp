@@ -1,105 +1,179 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Formulaire Demande</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nouvelle demande</title>
     <style>
         body {
+            margin: 0;
             font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            padding: 20px;
+            color: #202124;
+            background: #f6f7f9;
         }
-        .container {
-            max-width: 500px;
-            margin: 50px auto;
-            background-color: white;
-            padding: 30px;
+
+        main {
+            max-width: 720px;
+            margin: 40px auto;
+            padding: 0 18px;
+        }
+
+        form {
+            background: #fff;
+            border: 1px solid #dfe3e8;
             border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 28px;
         }
+
         h1 {
-            text-align: center;
-            color: #333;
+            margin: 0 0 24px;
+            font-size: 26px;
         }
-        .form-group {
-            margin-bottom: 20px;
+
+        .message {
+            margin-bottom: 18px;
+            padding: 12px 14px;
+            border-radius: 6px;
+            color: #0f5132;
+            background: #d1e7dd;
+            border: 1px solid #badbcc;
         }
+
+        .field {
+            margin-bottom: 18px;
+        }
+
         label {
             display: block;
-            margin-bottom: 5px;
-            color: #555;
-            font-weight: bold;
+            margin-bottom: 7px;
+            font-weight: 700;
         }
-        input[type="text"],
-        input[type="date"] {
+
+        input,
+        select,
+        textarea {
             width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
             box-sizing: border-box;
-            font-size: 14px;
+            padding: 10px 12px;
+            border: 1px solid #cfd6dd;
+            border-radius: 6px;
+            font: inherit;
+            background: #fff;
         }
-        input[type="text"]:focus,
-        input[type="date"]:focus {
+
+        textarea {
+            min-height: 96px;
+            resize: vertical;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
             outline: none;
-            border-color: #007bff;
-            box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+            border-color: #1a73e8;
+            box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.14);
         }
-        .button-container {
-            text-align: center;
-            margin-top: 30px;
+
+        .actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-top: 24px;
         }
+
+        a,
         button {
-            background-color: #007bff;
-            color: white;
-            padding: 12px 40px;
-            border: none;
-            border-radius: 4px;
+            min-height: 42px;
+            padding: 0 18px;
+            border-radius: 6px;
+            font-weight: 700;
+            text-decoration: none;
             cursor: pointer;
-            font-size: 16px;
-            font-weight: bold;
-            transition: background-color 0.3s;
         }
+
+        a {
+            display: inline-flex;
+            align-items: center;
+            color: #1a73e8;
+            background: #fff;
+            border: 1px solid #cfd6dd;
+        }
+
+        button {
+            color: #fff;
+            background: #1a73e8;
+            border: 1px solid #1a73e8;
+        }
+
         button:hover {
-            background-color: #0056b3;
+            background: #1558b0;
+            border-color: #1558b0;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Formulaire Demande</h1>
-        
-        <form action="${pageContext.request.contextPath}/demande/save" method="POST">
-            <div class="form-group">
-                <label for="nom">Nom:</label>
-                <input type="text" id="nom" name="nom" required>
-            </div>
-            
-            <div class="form-group">
-                <label for="date">Date:</label>
-                <input type="date" id="date" name="jourDemande" required>
-            </div>
-            
-            <div class="form-group">
-                <label for="endroit">Endroit:</label>
-                <input type="text" id="endroit" name="lieux" required>
-            </div>
-            
-            <div class="form-group">
-                <label for="reference">Référence:</label>
-                <input type="text" id="reference" name="reference" required>
+    <main>
+        <form action="${pageContext.request.contextPath}/demande/save" method="post">
+            <h1>Nouvelle demande</h1>
+
+            <c:if test="${not empty success}">
+                <div class="message">${success}</div>
+            </c:if>
+
+            <div class="field">
+                <label for="idClient">Client</label>
+                <select id="idClient" name="idClient" required>
+                    <option value="">Choisir un client</option>
+                    <c:forEach var="client" items="${clients}">
+                        <option value="${client.id}">
+                            ${client.nom} ${client.prenom} - ${client.adresse}
+                        </option>
+                    </c:forEach>
+                </select>
             </div>
 
-            <div class="form-group">
-                <label for="commune">Numéro de la commune:</label>
-                <input type="number" id="commune" name="commune" required>
+            <div class="field">
+                <label for="commune">Commune</label>
+                <select id="commune" name="commune" required>
+                    <option value="">Choisir une commune</option>
+                    <c:forEach var="commune" items="${communes}">
+                        <option value="${commune.id}">${commune.nom}</option>
+                    </c:forEach>
+                </select>
             </div>
-            
-            <div class="button-container">
-                <button type="submit">Demander</button>
+
+            <div class="field">
+                <label for="lieux">Lieu de la demande</label>
+                <textarea id="lieux" name="lieux" required placeholder="Ex: Forage eau potable école primaire"></textarea>
+            </div>
+
+            <div class="field">
+                <label for="reference">Reference</label>
+                <input type="text" id="reference" name="reference" required placeholder="Ex: DEM-2026-006">
+            </div>
+
+            <div class="field">
+                <label for="idStatus">Status initial</label>
+                <select id="idStatus" name="idStatus" required>
+                    <option value="">Choisir un status</option>
+                    <c:forEach var="status" items="${statuses}">
+                        <option value="${status.id}">${status.status}</option>
+                    </c:forEach>
+                </select>
+            </div>
+
+            <div class="field">
+                <label for="dateDebut">Date du status</label>
+                <input type="date" id="dateDebut" name="dateDebut" required>
+            </div>
+
+            <div class="actions">
+                <a href="${pageContext.request.contextPath}/">Annuler</a>
+                <button type="submit">Enregistrer</button>
             </div>
         </form>
-    </div>
+    </main>
 </body>
 </html>

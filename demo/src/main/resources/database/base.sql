@@ -1,15 +1,3 @@
--- -- DROP DATABASE IF EXISTS banqueSring;
-
--- CREATE DATABASE banqueSring;
-
--- use banqueSring
-
--- CREATE TABLE Cheque(
---     idCheque INT PRIMARY KEY AUTO_INCREMENT,
---     numCheque INT,
---     numCompte  INT,
---     dateValide DATE
--- );
 DROP DATABASE IF EXISTS forage;
 CREATE DATABASE forage;
 USE forage;
@@ -47,7 +35,7 @@ CREATE TABLE demande (
     reference VARCHAR(200) UNIQUE,
     FOREIGN KEY (commune) REFERENCES commune(id)
 );
-
+--- status 
 CREATE TABLE status (
     id         INT PRIMARY KEY AUTO_INCREMENT,
     status     VARCHAR(200)
@@ -62,4 +50,25 @@ CREATE TABLE demande_status (
     date_fin   DATE,
     FOREIGN KEY (id_status)  REFERENCES status(id),
     FOREIGN KEY (id_demande) REFERENCES demande(id)
+);
+
+
+CREATE TABLE devis (
+    id int primary key auto_increment,
+    id_demande int,
+    observation varchar(255),
+    created_at datetime,
+    type_devis 
+    type varchar(50),
+    FOREIGN KEY (id_demande) REFERENCES demande(id)
+);
+
+CREATE TABLE devis_detail(
+    id int primary key auto_increment,
+    id_devis int,
+    libelle varchar(255),
+    quantite int,
+    prix_unitaire decimal(10,2),
+    montant decimal(10,2),
+    FOREIGN KEY (id_devis) REFERENCES devis(id)
 );

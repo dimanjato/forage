@@ -1,0 +1,40 @@
+
+2 creation devie
+    interface
+qantite
+pu
+uniter
+designation
+montant par ligne 
+devie en pdf avec un bouton
+
+devie 
+        libelle
+        contitet
+        pu 
+    devi pour etude
+      
+    devi pour forrage
+interface 
+    creation demande
+    cree devie  
+        demande
+            info demande
+        type 
+            etude
+            forrage
+
+table devi
+    id 
+    id_demande
+    created
+    observation
+    type
+
+table devis_detail
+    id_devis
+    libelle
+    qantite
+    pu
+    montant 
+    

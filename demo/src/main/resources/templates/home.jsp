@@ -5,7 +5,6 @@
     <title>Accueil</title>
 </head>
 <body>
-    <h1>NON</h1>
-    <h1>Welcome to the Cheque Page</h1>
+    <h1>Accueil</h1>
 </body>
 </html>
